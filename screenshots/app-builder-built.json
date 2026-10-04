@@ -1,0 +1,43 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "三星堆装饰书签尺",
+      "hasCanvas": false,
+      "bodyTextLen": 343,
+      "bodyTextHash": "93f6087ddea8018aec619e6ae7689c6a475e0f38a9a4a2f5c4b038740ceda09a",
+      "bodyTextPrefix": "三星堆 Bookmark Ruler Sanxingdui Museum 装饰书签尺 一面珐琅，一面镂金。一百五十毫米的书签尺沿",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "三星堆装饰书签尺",
+      "hasCanvas": false,
+      "bodyTextLen": 343,
+      "bodyTextHash": "93f6087ddea8018aec619e6ae7689c6a475e0f38a9a4a2f5c4b038740ceda09a",
+      "bodyTextPrefix": "三星堆 Bookmark Ruler Sanxingdui Museum 装饰书签尺 一面珐琅，一面镂金。一百五十毫米的书签尺沿",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": true,
+  "baselineReasons": [
+    "desktop: canvas disappeared",
+    "desktop: body text changed (476 -> 343 chars, hash mismatch)",
+    "mobile: canvas disappeared",
+    "mobile: body text changed (476 -> 343 chars, hash mismatch)"
+  ]
+}
