@@ -160,7 +160,7 @@ export function BookmarkStage() {
     let alive = true;
     let detachInput = () => {};
     let fiberTimer = 0;
-    let watchdog = 0;
+    const watchdog = 0;
     let releaseModel = () => {};
     let renderer: import("three").WebGLRenderer | null = null;
     let dispose = () => {
@@ -265,6 +265,7 @@ export function BookmarkStage() {
       controls.maxAzimuthAngle = Infinity;
       controls.enableRotate = false;
       controls.mouseButtons.LEFT = null;
+      controls.mouseButtons.RIGHT = null;
       controls.touches.ONE = null;
       controls.touches.TWO = 2;
       controls.target.set(0, 0, 0);
@@ -491,10 +492,12 @@ export function BookmarkStage() {
       let holeReady = false;
       let rotAnim: { t: number; dur: number } | null = null;
       let dragging = false;
+      let panning = false;
       const pointers = new Set<number>();
       const inertia = { x: 0, y: 0 };
       let lastX = 0;
       let lastY = 0;
+      const panShift = new THREE.Vector3();
       const soft: {
         mesh: import("three").Mesh;
         material: import("three").Material;
@@ -512,10 +515,67 @@ export function BookmarkStage() {
         rulerSpin.quaternion.premultiply(qPitch).premultiply(qYaw);
       };
 
+      const panByPixels = (dx: number, dy: number) => {
+        if (!controls.enablePan) return;
+        const height = Math.max(1, canvas.clientHeight);
+        offset.copy(camera.position).sub(controls.target);
+        let targetDistance = offset.length();
+        targetDistance *= Math.tan((camera.fov / 2) * Math.PI / 180);
+        const distanceX = (2 * dx * controls.panSpeed * targetDistance) / height;
+        const distanceY = (2 * dy * controls.panSpeed * targetDistance) / height;
+        camera.updateMatrixWorld();
+        panShift.set(0, 0, 0);
+        xAxis.setFromMatrixColumn(camera.matrix, 0).multiplyScalar(-distanceX);
+        panShift.add(xAxis);
+        yAxis.setFromMatrixColumn(camera.matrix, 1).multiplyScalar(distanceY);
+        panShift.add(yAxis);
+        controls.target.add(panShift);
+        camera.position.add(panShift);
+      };
+
+      const beginInteract = (cursor: string) => {
+        inertia.x = 0;
+        inertia.y = 0;
+        rotAnim = null;
+        anim = null;
+        userMoved = true;
+        spinOn = false;
+        canvas.style.cursor = cursor;
+        if (alive) {
+          setView("free");
+          setSpin(false);
+        }
+      };
+
+      const syncMouseMode = (buttons: number) => {
+        const mask = buttons & 3;
+        if (mask === 3 || mask === 2) {
+          dragging = false;
+          panning = true;
+          canvas.style.cursor = "move";
+          return "pan";
+        }
+        if (mask === 1) {
+          const wasPan = panning && !dragging;
+          dragging = true;
+          panning = false;
+          canvas.style.cursor = "grabbing";
+          return wasPan ? "tumble-from-pan" : "tumble";
+        }
+        dragging = false;
+        panning = false;
+        canvas.style.cursor = "grab";
+        return "none";
+      };
+
       const orientTarget = (name: ViewName) => {
         qTo.identity();
-        if (name === "back") qTo.setFromAxisAngle(worldUp, Math.PI);
-        else if (name === "side") qTo.setFromAxisAngle(worldUp, Math.PI / 2);
+        // Model mesh front/back were opposite the UI labels; flip front-facing views.
+        if (name === "front" || name === "home" || name === "tassel") {
+          qTo.setFromAxisAngle(worldUp, Math.PI);
+        } else if (name === "side") {
+          qTo.setFromAxisAngle(worldUp, Math.PI / 2);
+        }
       };
 
       const orientTo = (name: ViewName, instant: boolean) => {
@@ -532,36 +592,76 @@ export function BookmarkStage() {
 
       const onPointerDown = (event: PointerEvent) => {
         pointers.add(event.pointerId);
-        if (event.pointerType !== "touch" && event.button !== 0) return;
-        if (pointers.size > 1) {
-          dragging = false;
-          inertia.x = 0;
-          inertia.y = 0;
+        if (event.pointerType === "touch") {
+          if (pointers.size > 1) {
+            dragging = false;
+            panning = false;
+            inertia.x = 0;
+            inertia.y = 0;
+            return;
+          }
+          dragging = true;
+          panning = false;
+          lastX = event.clientX;
+          lastY = event.clientY;
+          beginInteract("grabbing");
           return;
         }
-        dragging = true;
-        inertia.x = 0;
-        inertia.y = 0;
-        lastX = event.clientX;
-        lastY = event.clientY;
-        rotAnim = null;
-        anim = null;
-        userMoved = true;
-        spinOn = false;
-        canvas.style.cursor = "grabbing";
-        if (alive) {
-          setView("free");
-          setSpin(false);
+        if (event.button === 0) {
+          lastX = event.clientX;
+          lastY = event.clientY;
+          if ((event.buttons & 3) === 3) {
+            dragging = false;
+            panning = true;
+            beginInteract("move");
+          } else {
+            dragging = true;
+            panning = false;
+            beginInteract("grabbing");
+          }
+          return;
+        }
+        if (event.button === 2) {
+          lastX = event.clientX;
+          lastY = event.clientY;
+          dragging = false;
+          panning = true;
+          beginInteract("move");
         }
       };
 
       const onPointerMove = (event: PointerEvent) => {
-        if (!dragging || pointers.size > 1) return;
+        if (event.pointerType === "touch") {
+          if (!dragging || pointers.size > 1) return;
+          const dx = event.clientX - lastX;
+          const dy = event.clientY - lastY;
+          lastX = event.clientX;
+          lastY = event.clientY;
+          if (!dx && !dy) return;
+          tumble(dx, dy);
+          inertia.x = dx;
+          inertia.y = dy;
+          return;
+        }
+        if (!dragging && !panning) return;
+        const mode = syncMouseMode(event.buttons);
+        if (mode === "tumble-from-pan") {
+          lastX = event.clientX;
+          lastY = event.clientY;
+          return;
+        }
+        if (mode === "none") return;
         const dx = event.clientX - lastX;
         const dy = event.clientY - lastY;
         lastX = event.clientX;
         lastY = event.clientY;
         if (!dx && !dy) return;
+        if (panning) {
+          panByPixels(dx, dy);
+          inertia.x = 0;
+          inertia.y = 0;
+          return;
+        }
         tumble(dx, dy);
         inertia.x = dx;
         inertia.y = dy;
@@ -569,11 +669,23 @@ export function BookmarkStage() {
 
       const endDrag = (event: PointerEvent) => {
         pointers.delete(event.pointerId);
+        if (event.pointerType !== "touch") {
+          const mode = syncMouseMode(event.buttons);
+          if (mode !== "none") {
+            lastX = event.clientX;
+            lastY = event.clientY;
+            inertia.x = 0;
+            inertia.y = 0;
+          }
+          return;
+        }
         if (pointers.size > 0) {
           dragging = false;
+          panning = false;
           return;
         }
         dragging = false;
+        panning = false;
         canvas.style.cursor = "grab";
       };
 
@@ -1332,7 +1444,7 @@ transformed.y += pin * uAngle * uLen * 0.22;`;
         if (!alive) return;
         shown.current = true;
         shownRef.current = true;
-        gpu.setClearColor(0x100e0c, 1);
+        gpu.setClearColor(0x000000, 0);
         setTier(tierName);
         setSource(model.source);
         setStatus("ready");
@@ -1642,7 +1754,7 @@ transformed.y += pin * uAngle * uLen * 0.22;`;
             </button>
           ))}
         </div>
-        <p className="hint">左右拖动看正反面，上下拖动把尺身放平 · 挂绳和流苏始终向下垂 · 右键挪动 · 滚轮放大</p>
+        <p className="hint">左右拖动看正反面，上下拖动把尺身放平 · 挂绳和流苏始终向下垂 · 右键挪动 · 左右键同时按住可拖动画面 · 滚轮放大</p>
       </div>
     </section>
   );

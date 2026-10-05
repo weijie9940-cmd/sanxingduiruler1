@@ -13,9 +13,9 @@ export const Route = createRootRoute({
       { title: APP_NAME },
       {
         name: "description",
-        content: "三星堆装饰书签尺：铜金镂空尺身、双面纹样与青绿流苏，可旋转观看。",
+        content: "三星堆装饰书签尺：镂金尺身、双面纹样与青绿丝绦，可旋转观看。",
       },
-      { name: "theme-color", content: "#100e0c" },
+      { name: "theme-color", content: "#0a0908" },
     ],
     links: [
       { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },

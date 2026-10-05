@@ -127,8 +127,8 @@ function buildFrames(keys: CurveKey[]) {
   for (let i = 0; i <= steps; i += 1) points.push(sampleCurve(keys, i / steps).point);
   const normals: THREE.Vector3[] = [];
   const binormals: THREE.Vector3[] = [];
-  let normal = new THREE.Vector3();
-  let binormal = new THREE.Vector3();
+  const normal = new THREE.Vector3();
+  const binormal = new THREE.Vector3();
   for (let i = 0; i <= steps; i += 1) {
     const next = points[Math.min(steps, i + 1)];
     const prev = points[Math.max(0, i - 1)];

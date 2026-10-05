@@ -4,7 +4,6 @@ import type { MeshoptDecoder } from "three/addons/libs/meshopt_decoder.module.js
 export const MODEL_REV = "2";
 export const PREVIEW_MODEL_URL = `/bookmark.preview.glb?v=${MODEL_REV}`;
 export const FULL_MODEL_URL = `/bookmark.full.glb?v=${MODEL_REV}`;
-export const ORIGINAL_MODEL_URL = `/bookmark.glb?v=${MODEL_REV}`;
 export const REMOTE_MODEL_URL =
   "https://present-beacon-ewjc.here.now/decorative_bookmark_ruler_tassel.glb";
 export const SHOWCASE_URL = "https://present-beacon-ewjc.here.now/";

@@ -6,3 +6,6 @@ node_modules/
 
 # Prebuilt Vercel output is regenerated on deploy; never commit it
 .vercel/output/
+screenshots/
+attachments/
+artifacts/
