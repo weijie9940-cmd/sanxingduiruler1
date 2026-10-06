@@ -9,3 +9,6 @@ node_modules/
 screenshots/
 attachments/
 artifacts/
+
+# Local build output (EdgeOne Pages builds it on deploy)
+dist/

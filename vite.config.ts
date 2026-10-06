@@ -12,6 +12,15 @@ import { grokPwaPlugin } from "./scripts/grok-pwa-plugin.mjs";
 import { appEnvPlugin } from "./scripts/app-env-plugin.mjs";
 import { isMigrationFile } from "./scripts/migration-plan.mjs";
 
+/**
+ * `npm run build:edgeone` (scripts/edgeone-build.mjs) sets DEPLOY_TARGET=edgeone:
+ * a fully static build for Tencent EdgeOne Pages. TanStack Start prerenders `/`
+ * into dist/client/index.html and the Vercel Nitro server is skipped. An env var
+ * rather than `--mode` because Start's prerender step re-loads this config in a
+ * nested `vite preview`, which inherits process.env but not the CLI mode.
+ */
+const isEdgeoneStatic = process.env.DEPLOY_TARGET === "edgeone";
+
 /** The files `src/lib/db.ts` globs — same directory, same non-recursive scope. */
 function hasGlobbedMigrations(root: string): boolean {
   try {
@@ -166,8 +175,12 @@ export default defineConfig(({ command, isPreview }) => ({
     // PWA head + ?install=1 tutorial page; runs before Start/Nitro.
     grokPwaPlugin(),
     tailwindcss(),
-    tanstackStart(),
-    ...(command === "build" || isPreview
+    tanstackStart(
+      isEdgeoneStatic
+        ? { prerender: { enabled: true, crawlLinks: false, failOnError: true } }
+        : {},
+    ),
+    ...(!isEdgeoneStatic && (command === "build" || isPreview)
       ? [
           nitro({
             preset: "vercel",
