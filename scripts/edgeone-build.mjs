@@ -2,13 +2,14 @@
 /**
  * Static build for Tencent EdgeOne Pages (`npm run build:edgeone`).
  *
- * The public site is a single prerenderable page with no server features in
- * use (auth is off in .grok/app-env.json, no database, no API routes), so it
- * ships as plain static files — no EdgeOne functions needed.
+ * The public site is a couple of prerenderable pages (the portfolio home `/`
+ * and the 3D exhibit `/sanxingdui`) with no server features in use (auth is
+ * off in .grok/app-env.json, no database, no API routes), so it ships as plain
+ * static files — no EdgeOne functions needed.
  *
  * 1. `vite build` with DEPLOY_TARGET=edgeone: vite.config.ts then skips the
  *    Vercel Nitro server and has TanStack Start prerender `/` into
- *    dist/client/index.html.
+ *    dist/client/index.html and `/sanxingdui` into dist/client/sanxingdui/index.html.
  * 2. Re-create statically what the Nitro middleware (server/middleware/grok-pwa.ts)
  *    adds at request time on Vercel: the web manifest and the PWA / share-card
  *    head tags. The grok.com banner script is left out (VITE_GROK_EXTENSIONS=0).
@@ -36,10 +37,19 @@ const build = spawnSync(
 );
 if (build.status !== 0) process.exit(build.status ?? 1);
 
-const indexPath = join(outDir, "index.html");
-if (!existsSync(indexPath)) {
-  console.error("[edgeone] dist/client/index.html missing — prerender did not run.");
-  process.exit(1);
+/**
+ * Prerendered pages (see PRERENDER_PAGES in vite.config.ts). `ogTitle` overrides
+ * the share-card title from src/lib/og/site.json for that page only.
+ */
+const PAGES = [
+  { file: "index.html", ogTitle: "Xina · 作品集" },
+  { file: join("sanxingdui", "index.html") },
+];
+for (const page of PAGES) {
+  if (!existsSync(join(outDir, page.file))) {
+    console.error(`[edgeone] dist/client/${page.file} missing — prerender did not run.`);
+    process.exit(1);
+  }
 }
 
 // Imported after the build so its env reads see the values set above.
@@ -59,8 +69,13 @@ const manifestJson = `${JSON.stringify(manifest, null, 2)}\n`;
 writeFileSync(join(outDir, "__grok", "manifest.webmanifest"), manifestJson);
 writeFileSync(join(outDir, "__grok", "manifest.json"), manifestJson);
 
-const html = readFileSync(indexPath, "utf8");
-writeFileSync(indexPath, injectGrokPwaHead(html, { host, cwd: root }));
+const ogSite = readOgSite(root);
+for (const page of PAGES) {
+  const pagePath = join(outDir, page.file);
+  const html = readFileSync(pagePath, "utf8");
+  const site = page.ogTitle ? { ...ogSite, title: page.ogTitle } : undefined;
+  writeFileSync(pagePath, injectGrokPwaHead(html, { host, cwd: root, site }));
+}
 
 function walk(dir) {
   return readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {

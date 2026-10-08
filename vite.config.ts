@@ -14,12 +14,16 @@ import { isMigrationFile } from "./scripts/migration-plan.mjs";
 
 /**
  * `npm run build:edgeone` (scripts/edgeone-build.mjs) sets DEPLOY_TARGET=edgeone:
- * a fully static build for Tencent EdgeOne Pages. TanStack Start prerenders `/`
- * into dist/client/index.html and the Vercel Nitro server is skipped. An env var
+ * a fully static build for Tencent EdgeOne Pages. TanStack Start prerenders every
+ * page in PRERENDER_PAGES (`/` → dist/client/index.html, `/sanxingdui` →
+ * dist/client/sanxingdui/index.html) and the Vercel Nitro server is skipped. An env var
  * rather than `--mode` because Start's prerender step re-loads this config in a
  * nested `vite preview`, which inherits process.env but not the CLI mode.
  */
 const isEdgeoneStatic = process.env.DEPLOY_TARGET === "edgeone";
+
+/** Pages written as static HTML in the EdgeOne build: the portfolio home and the 3D exhibit. */
+const PRERENDER_PAGES = [{ path: "/" }, { path: "/sanxingdui" }];
 
 /** The files `src/lib/db.ts` globs — same directory, same non-recursive scope. */
 function hasGlobbedMigrations(root: string): boolean {
@@ -177,7 +181,10 @@ export default defineConfig(({ command, isPreview }) => ({
     tailwindcss(),
     tanstackStart(
       isEdgeoneStatic
-        ? { prerender: { enabled: true, crawlLinks: false, failOnError: true } }
+        ? {
+            pages: PRERENDER_PAGES,
+            prerender: { enabled: true, crawlLinks: false, failOnError: true },
+          }
         : {},
     ),
     ...(!isEdgeoneStatic && (command === "build" || isPreview)
