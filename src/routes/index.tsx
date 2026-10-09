@@ -23,11 +23,15 @@ type Work = {
   title: string;
   meta: string;
   to?: "/sanxingdui";
+  /** 独立部署的外部站点，新标签页打开 */
+  href?: string;
 };
+
+const ORBITAL_URL = "https://orbital.xina-official.cn";
 
 const WORKS: Work[] = [
   { no: "01", title: "三星堆书签尺", meta: "3D 交互展示 · 文创设计", to: "/sanxingdui" },
-  { no: "02", title: "3D 建模作品", meta: "筹备中 · 敬请期待" },
+  { no: "02", title: "ORBITAL", meta: "交互式数据可视化 · 2026", href: ORBITAL_URL },
   { no: "03", title: "平面 / 视觉设计", meta: "筹备中 · 敬请期待" },
   { no: "04", title: "交互小实验", meta: "筹备中 · 敬请期待" },
 ];
@@ -78,31 +82,59 @@ function PortfolioHome() {
             <span>INDEX</span>
           </div>
           <div className="pf-spread">
-            <article className="pf-feature">
-              <Link to="/sanxingdui" className="pf-img" preload="intent">
-                <img
-                  src="/works/sxd-3d.webp"
-                  alt="三星堆书签尺 3D 预览"
-                  width={814}
-                  height={643}
-                  decoding="async"
-                />
-                <span className="pf-no">No. 01 · 封面作品</span>
-              </Link>
-              <div className="pf-cap">
-                <div className="pf-big">01</div>
-                <div>
-                  <h3>三星堆书签尺</h3>
-                  <p className="pf-desc">
-                    以三星堆金与青铜为灵感的书签尺，镂金尺身、双面纹样与青绿丝绦，可在网页中 360°
-                    旋转观看。
-                  </p>
-                  <Link to="/sanxingdui" className="pf-more" preload="intent">
-                    进入 3D 展厅 →
-                  </Link>
+            <div className="pf-features">
+              <article className="pf-feature">
+                <Link to="/sanxingdui" className="pf-img" preload="intent">
+                  <img
+                    src="/works/sxd-3d.webp"
+                    alt="三星堆书签尺 3D 预览"
+                    width={814}
+                    height={643}
+                    decoding="async"
+                  />
+                  <span className="pf-no">No. 01 · 封面作品</span>
+                </Link>
+                <div className="pf-cap">
+                  <div className="pf-big">01</div>
+                  <div>
+                    <h3>三星堆书签尺</h3>
+                    <p className="pf-desc">
+                      以三星堆金与青铜为灵感的书签尺，镂金尺身、双面纹样与青绿丝绦，可在网页中 360°
+                      旋转观看。
+                    </p>
+                    <Link to="/sanxingdui" className="pf-more" preload="intent">
+                      进入 3D 展厅 →
+                    </Link>
+                  </div>
                 </div>
-              </div>
-            </article>
+              </article>
+              <article className="pf-feature">
+                <a href={ORBITAL_URL} className="pf-img" target="_blank" rel="noopener">
+                  <img
+                    src="/works/orbital.webp"
+                    alt="ORBITAL CS 电竞版图 3D 地球预览"
+                    width={1600}
+                    height={1000}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span className="pf-no">No. 02 · 数据可视化</span>
+                </a>
+                <div className="pf-cap">
+                  <div className="pf-big">02</div>
+                  <div>
+                    <h3>ORBITAL</h3>
+                    <p className="pf-desc">
+                      CS 电竞版图 3D 地球：收录 2013–2026 年 201 场 S 级赛事（含 24 场
+                      Major），可拖动地球、切换昼夜光照，用年份滑块和战队高亮回看赛事版图。
+                    </p>
+                    <a href={ORBITAL_URL} className="pf-more" target="_blank" rel="noopener">
+                      打开 3D 地球 ↗
+                    </a>
+                  </div>
+                </div>
+              </article>
+            </div>
             <div>
               <ol className="pf-list">
                 {WORKS.map((work) => {
@@ -116,11 +148,15 @@ function PortfolioHome() {
                     </>
                   );
                   return (
-                    <li key={work.no} className={work.to ? "pf-ready" : "pf-soon"}>
+                    <li key={work.no} className={work.to || work.href ? "pf-ready" : "pf-soon"}>
                       {work.to ? (
                         <Link to={work.to} className="pf-row" preload="intent">
                           {body}
                         </Link>
+                      ) : work.href ? (
+                        <a href={work.href} className="pf-row" target="_blank" rel="noopener">
+                          {body}
+                        </a>
                       ) : (
                         <div className="pf-row">{body}</div>
                       )}
@@ -139,7 +175,8 @@ function PortfolioHome() {
           <section id="about">
             <h2>关于</h2>
             <p>
-              一名普通大学生，喜欢折腾 AI 工具，也喜欢做 3D 建模。这里收着我课余做的小东西，边做边学，慢慢更新。
+              一名普通大学生，喜欢折腾 AI 工具，也喜欢做 3D
+              建模。这里收着我课余做的小东西，边做边学，慢慢更新。
             </p>
           </section>
           <section id="contact">
