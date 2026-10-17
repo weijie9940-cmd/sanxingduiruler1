@@ -46,17 +46,17 @@ function PortfolioHome() {
         <div className="pf-stage" aria-hidden="true">
           <div className="pf-slide">
             <img
-              src="/works/sxd-3d.webp"
+              src="/works/sxd-cover.webp"
               alt=""
-              width={814}
-              height={643}
+              width={1600}
+              height={1000}
               decoding="async"
               fetchPriority="high"
             />
             <span className="pf-slide-label">展品 01 · 三星堆书签尺</span>
           </div>
           <div className="pf-slide">
-            <img src="/works/orbital.webp" alt="" width={1600} height={1000} decoding="async" />
+            <img src="/works/orbital-cover.webp" alt="" width={1600} height={1000} decoding="async" />
             <span className="pf-slide-label">展品 02 · ORBITAL</span>
           </div>
         </div>
@@ -74,10 +74,10 @@ function PortfolioHome() {
               <Link to="/sanxingdui" className="pf-shot" preload="intent">
                 <span className="pf-shot-frame">
                   <img
-                    src="/works/sxd-3d.webp"
-                    alt="三星堆书签尺 3D 预览"
-                    width={814}
-                    height={643}
+                    src="/works/sxd-cover.webp"
+                    alt="三星堆书签尺展陈主视觉：夜色中的青铜书签尺，题有「三星堆」"
+                    width={1600}
+                    height={1000}
                     loading="lazy"
                     decoding="async"
                   />
@@ -105,8 +105,8 @@ function PortfolioHome() {
               <a className="pf-shot" href={ORBITAL_URL} target="_blank" rel="noopener">
                 <span className="pf-shot-frame">
                   <img
-                    src="/works/orbital.webp"
-                    alt="ORBITAL CS 电竞版图 3D 地球预览"
+                    src="/works/orbital-cover.webp"
+                    alt="ORBITAL 展陈主视觉：夜色地球与青铜轨道线，标注 2013–2026"
                     width={1600}
                     height={1000}
                     loading="lazy"
