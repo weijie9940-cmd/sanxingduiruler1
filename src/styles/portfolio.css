@@ -249,7 +249,7 @@ body:has(.pf) {
   margin-top: 10px;
   font-family: var(--pf-display);
   font-size: clamp(32px, 4vw, 44px);
-  font-weight: 560;
+  font-weight: 600;
   letter-spacing: 0.04em;
   line-height: 1.15;
 }
