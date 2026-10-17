@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import portfolioCss from "../styles/portfolio.css?url";
 
-const PAPER = "#f3f0e8";
+const NIGHT = "#0c0f14";
+const ORBITAL_URL = "https://orbital.xina-official.cn";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -11,37 +12,19 @@ export const Route = createFileRoute("/")({
         name: "description",
         content: "Xina 的个人作品册，收录设计、3D 建模与网页交互方面的练习。",
       },
-      { name: "theme-color", content: PAPER },
+      { name: "theme-color", content: NIGHT },
     ],
     links: [{ rel: "stylesheet", href: portfolioCss }],
   }),
   component: PortfolioHome,
 });
 
-type Work = {
-  no: string;
-  title: string;
-  meta: string;
-  to?: "/sanxingdui";
-  /** 独立部署的外部站点，新标签页打开 */
-  href?: string;
-};
-
-const ORBITAL_URL = "https://orbital.xina-official.cn";
-
-const WORKS: Work[] = [
-  { no: "01", title: "三星堆书签尺", meta: "3D 交互展示 · 文创设计", to: "/sanxingdui" },
-  { no: "02", title: "ORBITAL", meta: "交互式数据可视化 · 2026", href: ORBITAL_URL },
-  { no: "03", title: "平面 / 视觉设计", meta: "筹备中 · 敬请期待" },
-  { no: "04", title: "交互小实验", meta: "筹备中 · 敬请期待" },
-];
-
 function PortfolioHome() {
   return (
     <div className="pf">
-      <header className="pf-header">
-        <div className="pf-wrap pf-top">
-          <Link to="/" className="pf-logo">
+      <section className="pf-hero">
+        <header className="pf-bar">
+          <Link to="/" className="pf-mark">
             Xina
           </Link>
           <nav className="pf-nav" aria-label="页面导航">
@@ -49,67 +32,78 @@ function PortfolioHome() {
             <a href="#about">关于</a>
             <a href="#contact">联系</a>
           </nav>
+        </header>
+
+        <div className="pf-hero-copy">
+          <h1>XINA</h1>
+          <p className="pf-lead">喜欢 AI 与 3D 的普通大学生，把课余做的小东西放在这里。</p>
+          <p className="pf-kicker">EST. 2026 · 2 件作品</p>
+          <a className="pf-enter" href="#works">
+            查看展陈 <span className="pf-arr">↓</span>
+          </a>
         </div>
-        <div className="pf-wrap">
-          <div className="pf-issue">
-            <span>VOL. 01 — 2026 秋</span>
-            <span>设计 · 3D · 交互 作品集</span>
+
+        <div className="pf-stage" aria-hidden="true">
+          <div className="pf-slide">
+            <img
+              src="/works/sxd-3d.webp"
+              alt=""
+              width={814}
+              height={643}
+              decoding="async"
+              fetchPriority="high"
+            />
+            <span className="pf-slide-label">展品 01 · 三星堆书签尺</span>
+          </div>
+          <div className="pf-slide">
+            <img src="/works/orbital.webp" alt="" width={1600} height={1000} decoding="async" />
+            <span className="pf-slide-label">展品 02 · ORBITAL</span>
           </div>
         </div>
-      </header>
+      </section>
 
       <main className="pf-wrap">
-        <section className="pf-hero">
-          <h1>
-            <span className="pf-l">做一点</span>
-            <span className="pf-l">
-              能被<i>看见</i>、
-            </span>
-            <span className="pf-l">
-              也能被<i>转动</i>的东西。
-            </span>
-          </h1>
-          <aside>
-            <div className="pf-k">编者按</div>
-            <p>这是一本慢慢更新的个人作品册，收录设计、3D 建模与网页交互方面的练习。</p>
-            <div className="pf-sig">— Xina</div>
-          </aside>
-        </section>
-
-        <section className="pf-works" id="works">
-          <div className="pf-label">
-            <h2>本期作品</h2>
-            <span>INDEX</span>
+        <section className="pf-hall" id="works">
+          <div className="pf-hall-head">
+            <p className="pf-kicker">Exhibits</p>
+            <h2>当前展陈</h2>
           </div>
-          <div className="pf-spread">
-            <div className="pf-features">
-              <article className="pf-feature">
-                <Link to="/sanxingdui" className="pf-img" preload="intent">
+
+          <div className="pf-exhibits">
+            <article className="pf-exhibit">
+              <Link to="/sanxingdui" className="pf-shot" preload="intent">
+                <span className="pf-shot-frame">
                   <img
                     src="/works/sxd-3d.webp"
                     alt="三星堆书签尺 3D 预览"
                     width={814}
                     height={643}
+                    loading="lazy"
                     decoding="async"
                   />
-                  <span className="pf-no">No. 01 · 封面作品</span>
+                </span>
+                <span className="pf-shot-go" aria-hidden="true">
+                  →
+                </span>
+              </Link>
+              <div className="pf-plate">
+                <h3>
+                  <span className="pf-exno">展品 01</span> — 三星堆书签尺
+                </h3>
+                <p className="pf-spec">文创设计 · 3D 交互 · Three.js</p>
+                <p className="pf-desc">
+                  以三星堆金与青铜为灵感的书签尺，镂金尺身、双面纹样与青绿丝绦，可在网页中 360°
+                  旋转观看。
+                </p>
+                <Link to="/sanxingdui" className="pf-more" preload="intent">
+                  进入展厅 <span className="pf-arr">→</span>
                 </Link>
-                <div className="pf-cap">
-                  <div className="pf-big">01</div>
-                  <div>
-                    <h3>三星堆书签尺</h3>
-                    <p className="pf-desc">
-                      以三星堆金与青铜为灵感的书签尺，镂金尺身、双面纹样与青绿丝绦，可在网页中 360°
-                      旋转观看。
-                    </p>
-                    <Link to="/sanxingdui" className="pf-more" preload="intent">
-                      进入 3D 展厅 →
-                    </Link>
-                  </div>
-                </div>
-              </article>
-              <article className="pf-feature">
-                <a href={ORBITAL_URL} className="pf-img" target="_blank" rel="noopener">
+              </div>
+            </article>
+
+            <article className="pf-exhibit">
+              <a className="pf-shot" href={ORBITAL_URL} target="_blank" rel="noopener">
+                <span className="pf-shot-frame">
                   <img
                     src="/works/orbital.webp"
                     alt="ORBITAL CS 电竞版图 3D 地球预览"
@@ -118,84 +112,46 @@ function PortfolioHome() {
                     loading="lazy"
                     decoding="async"
                   />
-                  <span className="pf-no">No. 02 · 数据可视化</span>
+                </span>
+                <span className="pf-shot-go" aria-hidden="true">
+                  ↗
+                </span>
+              </a>
+              <div className="pf-plate">
+                <h3>
+                  <span className="pf-exno">展品 02</span> — ORBITAL · CS 电竞 3D 地球
+                </h3>
+                <p className="pf-spec">2026 · 数据可视化</p>
+                <p className="pf-desc">
+                  CS 电竞版图 3D 地球：收录 2013–2026 年 201 场 S 级赛事（含 24 场
+                  Major），可拖动地球、切换昼夜光照，用年份滑块和战队高亮回看赛事版图。
+                </p>
+                <a className="pf-more" href={ORBITAL_URL} target="_blank" rel="noopener">
+                  打开地球 <span className="pf-arr">↗</span>
                 </a>
-                <div className="pf-cap">
-                  <div className="pf-big">02</div>
-                  <div>
-                    <h3>ORBITAL</h3>
-                    <p className="pf-desc">
-                      CS 电竞版图 3D 地球：收录 2013–2026 年 201 场 S 级赛事（含 24 场
-                      Major），可拖动地球、切换昼夜光照，用年份滑块和战队高亮回看赛事版图。
-                    </p>
-                    <a href={ORBITAL_URL} className="pf-more" target="_blank" rel="noopener">
-                      打开 3D 地球 ↗
-                    </a>
-                  </div>
-                </div>
-              </article>
-            </div>
-            <div>
-              <ol className="pf-list">
-                {WORKS.map((work) => {
-                  const body = (
-                    <>
-                      <span className="pf-n">{work.no}</span>
-                      <div>
-                        <h4>{work.title}</h4>
-                        <p>{work.meta}</p>
-                      </div>
-                    </>
-                  );
-                  return (
-                    <li key={work.no} className={work.to || work.href ? "pf-ready" : "pf-soon"}>
-                      {work.to ? (
-                        <Link to={work.to} className="pf-row" preload="intent">
-                          {body}
-                        </Link>
-                      ) : work.href ? (
-                        <a href={work.href} className="pf-row" target="_blank" rel="noopener">
-                          {body}
-                        </a>
-                      ) : (
-                        <div className="pf-row">{body}</div>
-                      )}
-                    </li>
-                  );
-                })}
-              </ol>
-              <p className="pf-quote">下一期内容正在制作中，新作品会陆续加入这份目录。</p>
-            </div>
+              </div>
+            </article>
           </div>
-        </section>
-      </main>
 
-      <div className="pf-wrap">
-        <div className="pf-colophon">
+          <p className="pf-pending">03 / 04 — 筹备中</p>
+        </section>
+
+        <footer className="pf-foot">
           <section id="about">
             <h2>关于</h2>
             <p>
-              一名普通大学生，喜欢折腾 AI 工具，也喜欢做 3D
-              建模。这里收着我课余做的小东西，边做边学，慢慢更新。
+              一名普通大学生，喜欢折腾 AI 工具，也喜欢做 3D 建模。这里收着我课余做的小东西，边做边学，慢慢更新。
             </p>
           </section>
           <section id="contact">
             <h2>联系</h2>
-            <p>
-              <a href="mailto:weijie9940@gmail.com">weijie9940@gmail.com</a>
-              <br />
-              <span className="pf-ph pf-small">合作或交流，欢迎来信。</span>
-            </p>
+            <a className="pf-mail" href="mailto:weijie9940@gmail.com">
+              weijie9940@gmail.com
+            </a>
           </section>
-        </div>
-      </div>
-
-      <footer className="pf-footer">
-        <div className="pf-wrap">
-          <span>© 2026 Xina</span>
-          <span>xina-official.cn</span>
-        </div>
-      </footer>
+          <p className="pf-colophon">© 2026 Xina</p>
+        </footer>
+      </main>
     </div>
   );
 }

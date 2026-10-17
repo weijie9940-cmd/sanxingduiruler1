@@ -1,32 +1,37 @@
 /*
- * 作品集首页（B 杂志风）。只在 `/` 路由的 head 里加载；
- * 所有类名都带 `pf-` 前缀，避免和三星堆展厅页（styles.css）的 .hero / .colophon 等撞名。
- * 只用系统字体，不引外部字体或 CDN。
+ * 首页「夜晚数字展厅」。只在 `/` 的 head 里加载，类名带 pf- 前缀。
+ * 系统字体，不嵌 webfont（0 KB）。中文走黑体栈，不回落到宋体。
  */
 html:has(.pf),
 body:has(.pf) {
-  background: #f3f0e8;
-  color: #1b1a17;
-  color-scheme: light;
+  background: #0c0f14;
+  color: #f3f1eb;
+  color-scheme: dark;
+  overflow-x: clip;
 }
 
 .pf {
-  --pf-paper: #f3f0e8;
-  --pf-ink: #1b1a17;
-  --pf-muted: #7d786c;
-  --pf-rule: #1b1a17;
-  --pf-hair: #d6d1c4;
-  --pf-accent: #9a3b26;
-  --pf-serif:
-    "Songti SC", "STSong", "Noto Serif SC", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun",
-    Georgia, "Times New Roman", serif;
-  --pf-sans:
-    -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Noto Sans SC",
-    "Noto Sans CJK SC", "Microsoft YaHei", sans-serif;
+  --pf-bg: #0c0f14;
+  --pf-deep: #0a0d12;
+  --pf-panel: #12161d;
+  --pf-ink: #f3f1eb;
+  --pf-soft: #c8c2b6;
+  --pf-muted: #a39e93;
+  --pf-dim: #8f8a80;
+  --pf-line: rgba(243, 241, 235, 0.14);
+  --pf-bronze: #e2c48a;
+  --pf-bronze-line: rgba(226, 196, 138, 0.38);
+  --pf-display: "Helvetica Neue", Helvetica, Arial, "Segoe UI", "PingFang SC", "Microsoft YaHei",
+    sans-serif;
+  --pf-sans: "PingFang SC", "Hiragino Sans GB", "Noto Sans SC", "Noto Sans CJK SC",
+    "Source Han Sans SC", "Microsoft YaHei", "Segoe UI", sans-serif;
+  --pf-mono: "SFMono-Regular", ui-monospace, "Segoe UI Mono", Menlo, Consolas, "PingFang SC",
+    "Microsoft YaHei", monospace;
   min-height: 100dvh;
-  background: var(--pf-paper);
+  background: var(--pf-bg);
   color: var(--pf-ink);
   font-family: var(--pf-sans);
+  font-size: 16px;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
 }
@@ -39,169 +44,251 @@ body:has(.pf) {
   padding: 0;
 }
 
+.pf ::selection {
+  background: var(--pf-bronze);
+  color: var(--pf-deep);
+}
+
 .pf a {
   color: inherit;
   text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease;
 }
 
 .pf a:focus-visible {
-  outline: 2px solid var(--pf-accent);
+  outline: 2px solid var(--pf-bronze);
   outline-offset: 3px;
 }
 
-.pf-wrap {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 56px;
+.pf-kicker {
+  color: var(--pf-bronze);
+  font-family: var(--pf-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  line-height: 1.4;
+  text-transform: uppercase;
 }
 
-/* ---------- 刊头 ---------- */
-.pf-header {
-  border-bottom: 1px solid var(--pf-rule);
+.pf-arr {
+  display: inline-block;
+  transition: transform 0.2s ease;
 }
 
-.pf-top {
+.pf a:hover .pf-arr,
+.pf a:focus-visible .pf-arr {
+  transform: translateX(4px);
+}
+
+.pf-enter:hover .pf-arr,
+.pf-enter:focus-visible .pf-arr {
+  transform: translateY(3px);
+}
+
+/* ---------- 展厅入口 ---------- */
+.pf-hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  min-height: 100dvh;
+  background: var(--pf-bg);
+}
+
+.pf-bar {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  right: 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 72px;
+  gap: 16px;
+  min-height: 72px;
+  padding: 16px max(22px, calc((100vw - 1240px) / 2 + 40px)) 16px
+    max(22px, calc((100vw - 1240px) / 2 + 40px));
 }
 
-.pf-logo {
-  font-family: var(--pf-serif);
-  font-size: 26px;
-  font-weight: 700;
-  font-style: italic;
-  letter-spacing: -0.01em;
+.pf-mark {
+  font-family: var(--pf-display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
 }
 
 .pf-nav {
   display: flex;
-  gap: 32px;
+  gap: 8px;
+}
+
+.pf-nav a {
+  padding: 12px 10px;
+  color: var(--pf-soft);
   font-size: 14px;
+  letter-spacing: 0.06em;
 }
 
-.pf-nav a:hover {
-  color: var(--pf-accent);
+.pf-nav a:hover,
+.pf-nav a:focus-visible {
+  color: var(--pf-bronze);
 }
 
-.pf-issue {
+.pf-hero-copy {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-top: 1px solid var(--pf-hair);
-  color: var(--pf-muted);
-  font-size: 12px;
-  letter-spacing: 0.14em;
-}
-
-/* ---------- 卷首 ---------- */
-.pf-hero {
-  display: grid;
-  grid-template-columns: 7fr 4fr;
-  gap: 64px;
-  padding: 88px 0 80px;
-  border-bottom: 1px solid var(--pf-rule);
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+  min-height: 100dvh;
+  padding: 112px 48px 72px max(28px, calc((100vw - 1240px) / 2 + 40px));
 }
 
 .pf-hero h1 {
-  font-family: var(--pf-serif);
-  font-weight: 700;
-  font-size: clamp(36px, 5.4vw, 80px);
-  line-height: 1.14;
-  letter-spacing: -0.01em;
-  text-wrap: initial;
+  font-family: var(--pf-display);
+  font-size: clamp(64px, 11vw, 148px);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  line-height: 0.88;
 }
 
-.pf-hero .pf-l {
-  display: block;
-  white-space: nowrap;
+.pf-lead {
+  max-width: 16em;
+  margin-top: 28px;
+  color: var(--pf-soft);
+  font-size: clamp(18px, 2vw, 22px);
+  font-weight: 400;
+  line-height: 1.7;
+  text-wrap: pretty;
 }
 
-.pf-hero h1 i {
-  font-style: normal;
-  color: var(--pf-accent);
+.pf-hero .pf-kicker {
+  margin-top: 28px;
 }
 
-.pf-hero aside {
-  align-self: end;
-  padding-left: 28px;
-  border-left: 1px solid var(--pf-hair);
+.pf-enter {
+  align-self: flex-start;
+  margin-top: 32px;
+  padding-bottom: 4px;
+  border-bottom: 1px solid var(--pf-bronze-line);
+  color: var(--pf-ink);
+  font-size: 14px;
+  letter-spacing: 0.12em;
 }
 
-.pf-k {
-  color: var(--pf-muted);
-  font-size: 12px;
-  letter-spacing: 0.16em;
+.pf-enter:hover,
+.pf-enter:focus-visible {
+  color: var(--pf-bronze);
+  border-bottom-color: var(--pf-bronze);
 }
 
-.pf-hero aside p {
-  margin-top: 14px;
-  font-family: var(--pf-serif);
-  font-size: 18px;
-  line-height: 1.9;
-}
-
-.pf-sig {
-  margin-top: 20px;
-  color: var(--pf-muted);
-  font-size: 13px;
-}
-
-/* ---------- 本期作品 ---------- */
-.pf-works {
-  padding: 56px 0 96px;
-  scroll-margin-top: 16px;
-}
-
-.pf-label {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-  margin-bottom: 32px;
-}
-
-.pf-label h2 {
-  font-family: var(--pf-serif);
-  font-size: 30px;
-  font-weight: 700;
-}
-
-.pf-label span {
-  color: var(--pf-muted);
-  font-size: 12px;
-  letter-spacing: 0.16em;
-}
-
-.pf-spread {
-  display: grid;
-  grid-template-columns: 8fr 4fr;
-  gap: 56px;
-}
-
-.pf-spread > * {
-  min-width: 0;
-}
-
-.pf-features {
-  display: grid;
-  gap: 44px;
-}
-
-.pf-feature {
-  max-width: 500px;
-  margin-inline: auto;
-}
-
-.pf-img {
+.pf-stage {
   position: relative;
+  min-width: 0;
+  min-height: 100%;
+  overflow: hidden;
+  background: var(--pf-deep);
+  box-shadow: inset 1px 0 0 var(--pf-bronze-line);
+}
+
+.pf-slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  animation: pf-cross 18s ease-in-out infinite;
+}
+
+.pf-slide:nth-child(2) {
+  animation-delay: -9s;
+}
+
+.pf-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.pf-slide-label {
+  position: absolute;
+  left: 20px;
+  bottom: 20px;
+  padding: 8px 12px;
+  background: rgba(12, 15, 20, 0.9);
+  color: var(--pf-ink);
+  font-family: var(--pf-mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+@keyframes pf-cross {
+  0% { opacity: 1; }
+  40% { opacity: 1; }
+  50% { opacity: 0; }
+  90% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+/* ---------- 展品 ---------- */
+.pf-wrap {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+
+.pf-hall {
+  padding: 96px 0 32px;
+  scroll-margin-top: 24px;
+}
+
+.pf-hall-head {
+  max-width: 36em;
+  margin-bottom: 40px;
+}
+
+.pf-hall h2 {
+  margin-top: 10px;
+  font-family: var(--pf-display);
+  font-size: clamp(32px, 4vw, 44px);
+  font-weight: 560;
+  letter-spacing: 0.04em;
+  line-height: 1.15;
+}
+
+.pf-exhibits {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 28px;
+}
+
+.pf-exhibit {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--pf-panel);
+  border: 1px solid rgba(226, 196, 138, 0.2);
+  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+}
+
+.pf-exhibit:hover,
+.pf-exhibit:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--pf-bronze-line);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
+}
+
+.pf-shot {
+  position: relative;
+  display: block;
+}
+
+.pf-shot-frame {
   display: block;
   aspect-ratio: 16 / 10;
   overflow: hidden;
-  background: #111;
+  background: #080a0d;
 }
 
-.pf-img img {
+.pf-shot img {
   display: block;
   width: 100%;
   height: 100%;
@@ -209,185 +296,201 @@ body:has(.pf) {
   transition: transform 0.6s ease;
 }
 
-.pf-img:hover img {
-  transform: scale(1.02);
+.pf-exhibit:hover .pf-shot img,
+.pf-shot:focus-visible img {
+  transform: scale(1.03);
 }
 
-.pf-no {
+.pf-shot-go {
   position: absolute;
-  left: 20px;
-  top: 16px;
-  color: #e9d9b3;
-  font-family: var(--pf-serif);
-  font-size: 15px;
-  font-style: italic;
-}
-
-.pf-cap {
+  right: 14px;
+  bottom: 14px;
   display: grid;
-  grid-template-columns: auto 1fr;
-  gap: 20px;
-  align-items: start;
-  margin-top: 16px;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  background: rgba(12, 15, 20, 0.9);
+  color: var(--pf-bronze);
+  font-size: 16px;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.pf-big {
-  color: var(--pf-accent);
-  font-family: var(--pf-serif);
-  font-size: 46px;
-  font-weight: 700;
-  line-height: 0.9;
+.pf-exhibit:hover .pf-shot-go,
+.pf-shot:focus-visible .pf-shot-go {
+  opacity: 1;
+  transform: none;
 }
 
-.pf-feature h3 {
-  font-family: var(--pf-serif);
-  font-size: 24px;
-  font-weight: 700;
-  line-height: 1.3;
+.pf-plate {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0;
+  padding: 22px 22px 24px;
+}
+
+.pf-plate h3 {
+  font-family: var(--pf-sans);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  line-height: 1.35;
+  text-wrap: balance;
+}
+
+.pf-exno {
+  color: var(--pf-bronze);
+  font-family: var(--pf-mono);
+  font-size: 0.72em;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+}
+
+.pf-spec {
+  margin-top: 10px;
+  color: var(--pf-muted);
+  font-family: var(--pf-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
 }
 
 .pf-desc {
-  max-width: 560px;
-  margin-top: 6px;
-  color: #4a463e;
-  font-size: 14px;
+  margin-top: 14px;
+  color: var(--pf-soft);
+  font-size: 15px;
+  line-height: 1.75;
+  text-wrap: pretty;
 }
 
 .pf-more {
-  display: inline-block;
-  margin-top: 14px;
-  border-bottom: 1px solid var(--pf-ink);
+  margin-top: 18px;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--pf-line);
+  color: var(--pf-ink);
   font-size: 14px;
+  letter-spacing: 0.08em;
 }
 
-.pf .pf-more:hover {
-  color: var(--pf-accent);
-  border-color: var(--pf-accent);
+.pf-more:hover,
+.pf-more:focus-visible {
+  color: var(--pf-bronze);
+  border-bottom-color: var(--pf-bronze);
 }
 
-/* 目录 */
-.pf-list {
-  list-style: none;
-  border-top: 1px solid var(--pf-rule);
-}
-
-.pf-list li {
-  border-bottom: 1px solid var(--pf-hair);
-}
-
-.pf-row {
-  display: grid;
-  grid-template-columns: 44px 1fr;
-  gap: 8px;
-  padding: 22px 0;
-}
-
-.pf-n {
-  color: var(--pf-muted);
-  font-family: var(--pf-serif);
-  font-style: italic;
-}
-
-.pf-list h4 {
-  font-family: var(--pf-serif);
-  font-size: 20px;
-  font-weight: 700;
-}
-
-.pf-list p {
-  margin-top: 2px;
-  color: var(--pf-muted);
+.pf-pending {
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--pf-line);
+  color: var(--pf-dim);
+  font-family: var(--pf-mono);
   font-size: 13px;
-}
-
-.pf .pf-ready a.pf-row:hover h4 {
-  color: var(--pf-accent);
-}
-
-.pf-soon {
-  color: #a9a395;
-}
-
-.pf-soon h4 {
-  color: #8e887a;
-}
-
-.pf-quote {
-  margin-top: 36px;
-  padding-left: 16px;
-  border-left: 2px solid var(--pf-accent);
-  color: var(--pf-muted);
-  font-family: var(--pf-serif);
-  font-size: 15px;
-  line-height: 1.9;
+  letter-spacing: 0.14em;
 }
 
 /* ---------- 关于 / 联系 ---------- */
-.pf-colophon {
+.pf-foot {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  border-top: 1px solid var(--pf-rule);
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+  gap: 32px 48px;
+  margin-top: 72px;
+  padding: 56px 0 40px;
+  border-top: 1px solid var(--pf-line);
+  background: transparent;
 }
 
-.pf-colophon section {
-  padding: 48px 0 64px;
+.pf-foot section {
+  scroll-margin-top: 24px;
 }
 
-.pf-colophon section + section {
-  padding-left: 48px;
-  border-left: 1px solid var(--pf-hair);
-}
-
-.pf-colophon h2 {
-  color: var(--pf-muted);
+.pf-foot h2 {
+  color: var(--pf-bronze);
+  font-family: var(--pf-mono);
   font-size: 12px;
   font-weight: 500;
   letter-spacing: 0.16em;
 }
 
-.pf-colophon p {
-  max-width: 520px;
-  margin-top: 14px;
-  font-family: var(--pf-serif);
-  font-size: 22px;
-  line-height: 1.7;
+.pf-foot p {
+  max-width: 38em;
+  margin-top: 16px;
+  color: var(--pf-ink);
+  font-size: clamp(18px, 2vw, 22px);
+  line-height: 1.75;
+  text-wrap: pretty;
 }
 
-.pf-ph {
-  color: var(--pf-muted);
+.pf-mail {
+  display: inline-block;
+  margin-top: 16px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--pf-bronze);
+  color: var(--pf-bronze);
+  font-family: var(--pf-display);
+  font-size: clamp(22px, 3vw, 32px);
+  letter-spacing: 0.01em;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
-.pf-colophon .pf-small {
-  font-size: 15px;
+.pf-mail:hover,
+.pf-mail:focus-visible {
+  color: var(--pf-ink);
+  border-bottom-color: var(--pf-ink);
 }
 
-.pf-footer {
-  border-top: 1px solid var(--pf-rule);
-}
-
-.pf-footer .pf-wrap {
-  display: flex;
-  justify-content: space-between;
-  padding-top: 20px;
-  padding-bottom: 28px;
-  color: var(--pf-muted);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+.pf-colophon {
+  grid-column: 1 / -1;
+  margin-top: 8px;
+  color: var(--pf-dim) !important;
+  font-family: var(--pf-mono) !important;
+  font-size: 12px !important;
+  letter-spacing: 0.14em;
+  line-height: 1.4 !important;
 }
 
 @media (max-width: 960px) {
-  .pf-hero,
-  .pf-spread {
+  .pf-exhibits {
     grid-template-columns: 1fr;
-    gap: 40px;
+    gap: 24px;
+  }
+}
+
+@media (max-width: 860px) {
+  .pf-hero {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
   }
 
-  .pf-hero aside {
-    padding-top: 20px;
-    padding-left: 0;
-    border-top: 1px solid var(--pf-hair);
-    border-left: none;
+  .pf-bar {
+    padding-left: 22px;
+    padding-right: 22px;
+  }
+
+  .pf-hero-copy {
+    min-height: 0;
+    justify-content: flex-start;
+    padding: 104px 22px 32px;
+  }
+
+  .pf-stage {
+    flex: 1 1 auto;
+    width: 100%;
+    min-height: 220px;
+    box-shadow: inset 0 1px 0 var(--pf-bronze-line);
+  }
+
+  .pf-hall {
+    padding-top: 64px;
+  }
+
+  .pf-foot {
+    grid-template-columns: 1fr;
+    gap: 36px;
+    margin-top: 48px;
+    padding-top: 40px;
   }
 }
 
@@ -396,90 +499,47 @@ body:has(.pf) {
     padding: 0 22px;
   }
 
-  .pf-top {
-    height: 60px;
-  }
-
-  .pf-logo {
-    font-size: 22px;
-  }
-
   .pf-nav {
-    gap: 18px;
-    font-size: 13px;
+    gap: 0;
   }
 
-  .pf-issue span:last-child {
-    display: none;
+  .pf-nav a {
+    padding: 12px 8px;
   }
 
-  .pf-hero {
-    padding: 48px 0 44px;
+  .pf-plate {
+    padding: 18px 16px 20px;
   }
 
-  .pf-hero h1 {
-    font-size: 36px;
-  }
-
-  .pf-works {
-    padding: 40px 0 64px;
-  }
-
-  .pf-label h2 {
-    font-size: 24px;
-  }
-
-  .pf-cap {
-    gap: 16px;
-  }
-
-  .pf-big {
-    font-size: 38px;
-  }
-
-  .pf-feature h3 {
-    font-size: 21px;
-  }
-
-  .pf-features {
-    gap: 36px;
-  }
-
-  .pf-feature {
-    margin-inline: 0;
-  }
-
-  /* 手机上封面作品（01、02）就在上方，目录里不再重复 */
-  .pf-list li:nth-child(-n + 2) {
-    display: none;
-  }
-
-  .pf-colophon {
-    grid-template-columns: 1fr;
-  }
-
-  .pf-colophon section {
-    padding: 36px 0 40px;
-  }
-
-  .pf-colophon section + section {
-    padding-left: 0;
-    border-top: 1px solid var(--pf-hair);
-    border-left: none;
-  }
-
-  .pf-colophon p {
-    font-size: 18px;
-  }
-
-  .pf-footer .pf-wrap {
-    flex-direction: column;
-    gap: 4px;
+  .pf-lead {
+    margin-top: 20px;
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pf-img img {
+  .pf-slide {
+    animation: none;
+    opacity: 0;
+  }
+
+  .pf-slide:first-child {
+    opacity: 1;
+  }
+
+  .pf a,
+  .pf-arr,
+  .pf-exhibit,
+  .pf-shot img,
+  .pf-shot-go {
     transition: none;
+  }
+
+  .pf-exhibit:hover,
+  .pf-exhibit:focus-within,
+  .pf-exhibit:hover .pf-shot img,
+  .pf-shot:focus-visible img,
+  .pf a:hover .pf-arr,
+  .pf a:focus-visible .pf-arr {
+    transform: none;
   }
 }
