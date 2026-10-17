@@ -106,7 +106,7 @@ function PortfolioHome() {
                 <span className="pf-shot-frame">
                   <img
                     src="/works/orbital-cover.webp"
-                    alt="ORBITAL 展陈主视觉：夜色地球与青铜轨道线，标注 2013–2026"
+                    alt="ORBITAL 展陈主视觉：夜色地球与青铜轨道线，标注 2013–2026 与 24 场 Major"
                     width={1600}
                     height={1000}
                     loading="lazy"
