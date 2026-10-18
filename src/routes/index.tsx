@@ -23,6 +23,22 @@ function PortfolioHome() {
   return (
     <div className="pf">
       <section className="pf-hero">
+        <div className="pf-atrium" aria-hidden="true">
+          <div className="pf-shaft" />
+          <div className="pf-floor" />
+          <div className="pf-motes" />
+          <div className="pf-hints">
+            <span className="pf-hint">
+              <span className="pf-hint-ruler" />
+              01
+            </span>
+            <span className="pf-hint">
+              <span className="pf-hint-orb" />
+              02
+            </span>
+          </div>
+        </div>
+
         <header className="pf-bar">
           <Link to="/" className="pf-mark">
             Xina
@@ -42,27 +58,9 @@ function PortfolioHome() {
             查看展陈 <span className="pf-arr">↓</span>
           </a>
         </div>
-
-        <div className="pf-stage" aria-hidden="true">
-          <div className="pf-slide">
-            <img
-              src="/works/sxd-cover.webp"
-              alt=""
-              width={1600}
-              height={1000}
-              decoding="async"
-              fetchPriority="high"
-            />
-            <span className="pf-slide-label">展品 01 · 三星堆书签尺</span>
-          </div>
-          <div className="pf-slide">
-            <img src="/works/orbital-cover.webp" alt="" width={1600} height={1000} decoding="async" />
-            <span className="pf-slide-label">展品 02 · ORBITAL</span>
-          </div>
-        </div>
       </section>
 
-      <main className="pf-wrap">
+      <main>
         <section className="pf-hall" id="works">
           <div className="pf-hall-head">
             <p className="pf-kicker">Exhibits</p>
@@ -82,8 +80,8 @@ function PortfolioHome() {
                     decoding="async"
                   />
                 </span>
-                <span className="pf-shot-go" aria-hidden="true">
-                  →
+                <span className="pf-shot-enter">
+                  进入展厅 <span className="pf-arr">→</span>
                 </span>
               </Link>
               <div className="pf-plate">
@@ -113,8 +111,8 @@ function PortfolioHome() {
                     decoding="async"
                   />
                 </span>
-                <span className="pf-shot-go" aria-hidden="true">
-                  ↗
+                <span className="pf-shot-enter">
+                  打开地球 <span className="pf-arr">↗</span>
                 </span>
               </a>
               <div className="pf-plate">
@@ -136,6 +134,7 @@ function PortfolioHome() {
           <p className="pf-pending">03 / 04 — 筹备中</p>
         </section>
 
+        <div className="pf-wrap">
         <footer className="pf-foot">
           <section id="about">
             <h2>关于</h2>
@@ -151,6 +150,7 @@ function PortfolioHome() {
           </section>
           <p className="pf-colophon">© 2026 Xina</p>
         </footer>
+        </div>
       </main>
     </div>
   );

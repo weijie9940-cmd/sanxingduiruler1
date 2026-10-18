@@ -8,6 +8,7 @@ body:has(.pf) {
   color: #f3f1eb;
   color-scheme: dark;
   overflow-x: clip;
+  scroll-behavior: smooth;
 }
 
 .pf {
@@ -88,10 +89,12 @@ body:has(.pf) {
 /* ---------- 展厅入口 ---------- */
 .pf-hero {
   position: relative;
-  display: grid;
-  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  display: flex;
   min-height: 100dvh;
-  background: var(--pf-bg);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 80% 55% at 70% 18%, rgba(226, 196, 138, 0.07), transparent 60%),
+    var(--pf-bg);
 }
 
 .pf-bar {
@@ -134,21 +137,134 @@ body:has(.pf) {
   color: var(--pf-bronze);
 }
 
+.pf-atrium {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.pf-shaft {
+  position: absolute;
+  top: -12%;
+  left: 58%;
+  width: min(46vw, 640px);
+  height: 125%;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(to bottom, rgba(226, 196, 138, 0.34), rgba(226, 196, 138, 0.08) 46%, transparent 70%),
+    radial-gradient(ellipse at 50% 0%, rgba(243, 241, 235, 0.22), transparent 55%);
+  filter: blur(6px);
+  opacity: 0.9;
+  animation: pf-breathe 9s ease-in-out infinite;
+}
+
+.pf-shaft::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 6%;
+  width: 140%;
+  height: 28%;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(226, 196, 138, 0.3), transparent 68%);
+  filter: blur(8px);
+}
+
+.pf-floor {
+  position: absolute;
+  left: -30%;
+  right: -30%;
+  bottom: -18%;
+  height: 58%;
+  background-image:
+    linear-gradient(rgba(226, 196, 138, 0.34) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(226, 196, 138, 0.24) 1px, transparent 1px);
+  background-size: 120px 72px;
+  transform: perspective(520px) rotateX(68deg);
+  transform-origin: center top;
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 16%, #000 62%, transparent 92%);
+  opacity: 0.72;
+  animation: pf-drift 22s linear infinite;
+}
+
+.pf-motes {
+  position: absolute;
+  left: 46%;
+  top: 18%;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: rgba(243, 241, 235, 0.75);
+  box-shadow:
+    40px 30px 0 0 rgba(226, 196, 138, 0.55),
+    120px 90px 0 0 rgba(243, 241, 235, 0.35),
+    -70px 140px 0 0 rgba(226, 196, 138, 0.4),
+    180px 40px 0 0 rgba(243, 241, 235, 0.28),
+    90px 210px 0 0 rgba(226, 196, 138, 0.45),
+    -30px 260px 0 0 rgba(243, 241, 235, 0.3),
+    210px 180px 0 0 rgba(226, 196, 138, 0.32),
+    20px 320px 0 0 rgba(243, 241, 235, 0.22);
+  animation: pf-float 16s ease-in-out infinite;
+}
+
+.pf-hints {
+  position: absolute;
+  left: 58%;
+  bottom: 18%;
+  display: flex;
+  gap: 72px;
+  color: var(--pf-bronze);
+  font-family: var(--pf-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  opacity: 0.72;
+}
+
+.pf-hint {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.pf-hint-ruler,
+.pf-hint-orb {
+  display: block;
+}
+
+.pf-hint-ruler {
+  width: 3px;
+  height: 22px;
+  background: var(--pf-bronze);
+  box-shadow: 0 0 12px rgba(226, 196, 138, 0.65);
+}
+
+.pf-hint-orb {
+  width: 14px;
+  height: 14px;
+  border: 1px solid var(--pf-bronze);
+  border-radius: 50%;
+  box-shadow: 0 0 12px rgba(226, 196, 138, 0.45);
+}
+
 .pf-hero-copy {
+  position: relative;
+  z-index: 2;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  min-width: 0;
+  width: min(920px, 100%);
   min-height: 100dvh;
-  padding: 112px 48px 72px max(28px, calc((100vw - 1240px) / 2 + 40px));
+  padding: 120px 48px 18vh max(28px, calc((100vw - 1240px) / 2 + 40px));
 }
 
 .pf-hero h1 {
   font-family: var(--pf-display);
-  font-size: clamp(64px, 11vw, 148px);
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  line-height: 0.88;
+  font-size: clamp(96px, 16vw, 212px);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  line-height: 0.82;
+  text-shadow: 0 0 72px rgba(226, 196, 138, 0.28);
 }
 
 .pf-lead {
@@ -181,52 +297,21 @@ body:has(.pf) {
   border-bottom-color: var(--pf-bronze);
 }
 
-.pf-stage {
-  position: relative;
-  min-width: 0;
-  min-height: 100%;
-  overflow: hidden;
-  background: var(--pf-deep);
-  box-shadow: inset 1px 0 0 var(--pf-bronze-line);
+@keyframes pf-breathe {
+  0%,
+  100% { opacity: 0.72; }
+  50% { opacity: 1; }
 }
 
-.pf-slide {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  animation: pf-cross 18s ease-in-out infinite;
+@keyframes pf-drift {
+  from { background-position: 0 0; }
+  to { background-position: 0 72px; }
 }
 
-.pf-slide:nth-child(2) {
-  animation-delay: -9s;
-}
-
-.pf-slide img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-}
-
-.pf-slide-label {
-  position: absolute;
-  left: 20px;
-  bottom: 20px;
-  padding: 8px 12px;
-  background: rgba(12, 15, 20, 0.9);
-  color: var(--pf-ink);
-  font-family: var(--pf-mono);
-  font-size: 12px;
-  letter-spacing: 0.12em;
-}
-
-@keyframes pf-cross {
-  0% { opacity: 1; }
-  40% { opacity: 1; }
-  50% { opacity: 0; }
-  90% { opacity: 0; }
-  100% { opacity: 1; }
+@keyframes pf-float {
+  0%,
+  100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(12px, -18px, 0); }
 }
 
 /* ---------- 展品 ---------- */
@@ -237,7 +322,9 @@ body:has(.pf) {
 }
 
 .pf-hall {
-  padding: 96px 0 32px;
+  width: min(1520px, calc(100% - 80px));
+  margin: 0 auto;
+  padding: 112px 0 40px;
   scroll-margin-top: 24px;
 }
 
@@ -258,23 +345,29 @@ body:has(.pf) {
 .pf-exhibits {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 28px;
+  gap: 36px;
 }
 
 .pf-exhibit {
   display: flex;
   flex-direction: column;
   min-width: 0;
-  background: var(--pf-panel);
-  border: 1px solid rgba(226, 196, 138, 0.2);
-  transition: transform 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
+  background: linear-gradient(180deg, #171c24 0%, #10141a 42%);
+  border: 1px solid rgba(226, 196, 138, 0.28);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(226, 196, 138, 0.28);
+  transition: transform 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .pf-exhibit:hover,
 .pf-exhibit:focus-within {
-  transform: translateY(-4px);
-  border-color: var(--pf-bronze-line);
-  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.38);
+  transform: translateY(-10px);
+  border-color: rgba(226, 196, 138, 0.72);
+  box-shadow:
+    0 36px 80px rgba(0, 0, 0, 0.55),
+    0 0 48px rgba(226, 196, 138, 0.12),
+    inset 0 1px 0 rgba(226, 196, 138, 0.7);
 }
 
 .pf-shot {
@@ -283,10 +376,28 @@ body:has(.pf) {
 }
 
 .pf-shot-frame {
+  position: relative;
   display: block;
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: #080a0d;
+  box-shadow: inset 0 0 0 1px rgba(226, 196, 138, 0.22);
+}
+
+.pf-shot-frame::after {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 46%;
+  background: linear-gradient(to bottom, rgba(226, 196, 138, 0.22), transparent 72%);
+  pointer-events: none;
+  opacity: 0.7;
+  transition: opacity 0.4s ease;
+}
+
+.pf-exhibit:hover .pf-shot-frame::after,
+.pf-shot:focus-visible .pf-shot-frame::after {
+  opacity: 1;
 }
 
 .pf-shot img {
@@ -294,34 +405,30 @@ body:has(.pf) {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s ease;
+  transition: transform 0.7s ease;
 }
 
 .pf-exhibit:hover .pf-shot img,
 .pf-shot:focus-visible img {
-  transform: scale(1.03);
+  transform: scale(1.045);
 }
 
-.pf-shot-go {
+.pf-shot-enter {
   position: absolute;
-  right: 14px;
-  bottom: 14px;
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  background: rgba(12, 15, 20, 0.9);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 12px 18px;
+  background: linear-gradient(to top, rgba(8, 10, 13, 0.92), rgba(8, 10, 13, 0.2));
   color: var(--pf-bronze);
-  font-size: 16px;
-  opacity: 0;
-  transform: translateY(4px);
-  transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.pf-exhibit:hover .pf-shot-go,
-.pf-shot:focus-visible .pf-shot-go {
-  opacity: 1;
-  transform: none;
+  font-family: var(--pf-mono);
+  font-size: 13px;
+  letter-spacing: 0.16em;
 }
 
 .pf-plate {
@@ -459,32 +566,30 @@ body:has(.pf) {
 }
 
 @media (max-width: 860px) {
-  .pf-hero {
-    display: flex;
-    flex-direction: column;
-    min-height: 100dvh;
-  }
-
   .pf-bar {
     padding-left: 22px;
     padding-right: 22px;
   }
 
   .pf-hero-copy {
-    min-height: 0;
-    justify-content: flex-start;
-    padding: 104px 22px 32px;
+    padding: 108px 22px 28vh;
   }
 
-  .pf-stage {
-    flex: 1 1 auto;
-    width: 100%;
-    min-height: 220px;
-    box-shadow: inset 0 1px 0 var(--pf-bronze-line);
+  .pf-shaft {
+    left: 70%;
+    width: 70vw;
+  }
+
+  .pf-hints {
+    left: auto;
+    right: 22px;
+    bottom: 12%;
+    gap: 36px;
   }
 
   .pf-hall {
-    padding-top: 64px;
+    width: calc(100% - 44px);
+    padding-top: 72px;
   }
 
   .pf-foot {
@@ -518,20 +623,22 @@ body:has(.pf) {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .pf-slide {
-    animation: none;
-    opacity: 0;
+  html:has(.pf),
+  body:has(.pf) {
+    scroll-behavior: auto;
   }
 
-  .pf-slide:first-child {
-    opacity: 1;
+  .pf-shaft,
+  .pf-floor,
+  .pf-motes {
+    animation: none;
   }
 
   .pf a,
   .pf-arr,
   .pf-exhibit,
   .pf-shot img,
-  .pf-shot-go {
+  .pf-shot-frame::after {
     transition: none;
   }
 
@@ -540,7 +647,9 @@ body:has(.pf) {
   .pf-exhibit:hover .pf-shot img,
   .pf-shot:focus-visible img,
   .pf a:hover .pf-arr,
-  .pf a:focus-visible .pf-arr {
+  .pf a:focus-visible .pf-arr,
+  .pf-enter:hover .pf-arr,
+  .pf-enter:focus-visible .pf-arr {
     transform: none;
   }
 }
