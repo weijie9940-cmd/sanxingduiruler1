@@ -337,7 +337,7 @@ function ArchiveHome() {
             <div className="pf-work-media">
               <img
                 src="/works/orbital-cover.webp"
-                alt="ORBITAL 展陈主视觉：夜色地球与青铜轨道线"
+                alt="ORBITAL 寰宇主视觉：地球上的 CS 电竞历史地图"
                 width={1600}
                 height={1000}
                 loading="lazy"
@@ -346,12 +346,12 @@ function ArchiveHome() {
             </div>
             <div className="pf-work-label">
               <span className="pf-work-no">No.02</span>
-              <h3>ORBITAL</h3>
-              <p className="pf-work-concept">以地球为重心，用电竞元素点缀的轨道叙事站点</p>
+              <h3>ORBITAL 寰宇</h3>
+              <p className="pf-work-concept">在地球上探索 CS 电竞历史：Major、S 级赛事与战队足迹</p>
               <dl className="pf-meta">
                 <div>
                   <dt>类型</dt>
-                  <dd>交互网页</dd>
+                  <dd>交互地图</dd>
                 </div>
                 <div>
                   <dt>年份</dt>
@@ -363,7 +363,7 @@ function ArchiveHome() {
                 </div>
               </dl>
               <span className="pf-cta">
-                打开地球 <span className="pf-arr">↗</span>
+                打开地图 <span className="pf-arr">↗</span>
               </span>
             </div>
           </a>
@@ -403,7 +403,7 @@ function ArchiveHome() {
                 <span className="pf-live-dot" aria-hidden="true" />
                 Current Focus
               </h3>
-              <p>打磨档案馆首页信息架构，并整理两件作品的展签文案</p>
+              <p>持续更新 ORBITAL 赛事档案，并同步作品站展签文案</p>
             </article>
             <article data-glow>
               <h3>Next Milestone</h3>
