@@ -168,7 +168,7 @@ function ArchiveHome() {
             <span className="pf-shot-frame">
               <img
                 src="/works/orbital-cover.webp"
-                alt="ORBITAL 寰宇主视觉：地球上的 CS 电竞历史地图"
+                alt="ORBITAL · CS 赛事寰宇主视觉：地球仪与世界排名"
                 width={1600}
                 height={1000}
                 loading="lazy"
@@ -177,8 +177,8 @@ function ArchiveHome() {
             </span>
             <span className="pf-work-copy">
               <span className="pf-kicker">02</span>
-              <h3>ORBITAL 寰宇</h3>
-              <p>在地球上探索 CS 电竞历史：Major、S 级赛事与战队足迹</p>
+              <h3>ORBITAL · CS 赛事寰宇</h3>
+              <p>在地球仪上回溯每一场 S 级冠军的时代阵容与世界排名，并从选手国籍飞向他们的首都</p>
               <span className="pf-tag">交互地图</span>
               <span className="pf-more">
                 打开地图 <span className="pf-arr">↗</span>
