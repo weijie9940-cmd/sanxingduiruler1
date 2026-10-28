@@ -191,7 +191,7 @@ function ArchiveHome() {
           <a className="pf-work" href={BALL_URL} target="_blank" rel="noopener">
             <span className="pf-shot-frame">
               <img
-                src="/works/wood-rail-cover.webp"
+                src="/works/wood-rail-cover.svg"
                 alt="木轨回旋主视觉：奶油底上的木质机身与马卡龙色轨道"
                 width={1600}
                 height={1000}
