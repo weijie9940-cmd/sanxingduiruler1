@@ -4,6 +4,8 @@ import portfolioCss from "../styles/portfolio.css?url";
 
 const NIGHT = "#0c0f14";
 const ORBITAL_URL = "https://orbital.xina-official.cn";
+const BALL_URL =
+  "https://apple-zinc-raven-horizon-git-preview-codex-pla-83c884-xiiiinaaa.vercel.app";
 
 const ENTRIES = [
   { href: "#works", index: "01", title: "作品", en: "Works", line: "浏览 3D 展陈与交互网页" },
@@ -105,7 +107,7 @@ function ArchiveHome() {
           </p>
           <p className="pf-stats">
             <span>
-              <b>2</b> Works
+              <b>3</b> Works
             </span>
             <span>
               <b>1</b> Featured
@@ -186,7 +188,28 @@ function ArchiveHome() {
             </span>
           </a>
 
-          <p className="pf-pending">03 · 筹备中</p>
+          <a className="pf-work" href={BALL_URL} target="_blank" rel="noopener">
+            <span className="pf-shot-frame">
+              <img
+                src="/works/wood-rail-cover.webp"
+                alt="木轨回旋主视觉：奶油底上的木质机身与马卡龙色轨道"
+                width={1600}
+                height={1000}
+                loading="lazy"
+                decoding="async"
+              />
+            </span>
+            <span className="pf-work-copy">
+              <span className="pf-kicker">03</span>
+              <h3>木轨回旋</h3>
+              <p>在奶油色展柜里看木质机身与马卡龙轨道如何把钢珠送上一圈回旋</p>
+              <span className="pf-tag">交互仿真</span>
+              <span className="pf-more">
+                打开展柜 <span className="pf-arr">↗</span>
+              </span>
+            </span>
+          </a>
+
           <p className="pf-pending">04 · 筹备中</p>
         </section>
 
@@ -216,11 +239,11 @@ function ArchiveHome() {
           <div className="pf-focus">
             <article>
               <h3>Current Focus</h3>
-              <p>持续更新 ORBITAL 赛事档案，并同步作品站展签文案</p>
+              <p>打磨木轨回旋可玩预览，并完善作品站 No.03 展签</p>
             </article>
             <article>
               <h3>Next Milestone</h3>
-              <p>补第三件作品，或给现有作品加制作札记</p>
+              <p>确认后把 No.03 推上线，或给现有作品加制作札记</p>
             </article>
           </div>
           <ul className="pf-tools">
